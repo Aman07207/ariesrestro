@@ -2,9 +2,6 @@
 
 namespace App\Providers;
 
-use App\Enums\WaiterCallStatus;
-use App\Models\WaiterCall;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,8 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('partials.bottomnav-waiter', function ($view) {
-            $view->with('pendingCallCount', WaiterCall::where('status', WaiterCallStatus::Pending)->count());
-        });
+        //
     }
 }

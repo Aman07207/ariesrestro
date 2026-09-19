@@ -13,14 +13,7 @@ class CallController extends Controller
 {
     public function index()
     {
-        $hotelId = Auth::user()->hotel_id;
-
-        $calls = WaiterCall::whereHas('table', fn ($q) => $q->where('hotel_id', $hotelId))
-            ->with('table')
-            ->latest('id')
-            ->get();
-
-        return view('waiter.calls', ['calls' => $calls]);
+        return view('waiter.calls');
     }
 
     public function attend(WaiterCall $call)
@@ -39,9 +32,9 @@ class CallController extends Controller
     }
 
     /**
-     * Polled by public/js/waiter-alerts.js every few seconds so any open waiter
-     * screen can play a sound the moment a new call comes in — there's no
-     * realtime broadcast (Reverb) wired yet, so this is the honest stand-in.
+     * Superseded on the frontend by the Reverb-broadcast Livewire components
+     * (App\Livewire\Waiter\CallsBadge / CallsIndex), kept as a plain JSON
+     * endpoint for anything else that wants a poll-based read of this state.
      */
     public function pending(): JsonResponse
     {

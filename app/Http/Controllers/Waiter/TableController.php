@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Waiter;
 
 use App\Enums\OrderItemStatus;
 use App\Enums\SessionStatus;
-use App\Enums\WaiterCallStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Table;
-use App\Models\WaiterCall;
 use App\Services\Customer\BillingService;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,8 +41,6 @@ class TableController extends Controller
         return view('waiter.tables', [
             'hotel' => $hotel,
             'tables' => $tables,
-            'pendingCallCount' => WaiterCall::whereHas('table', fn ($q) => $q->where('hotel_id', $hotel->id))
-                ->where('status', WaiterCallStatus::Pending)->count(),
         ]);
     }
 

@@ -10,7 +10,7 @@
     <a href="{{ route('waiter.calls') }}" class="{{ request()->routeIs('waiter.calls') ? 'active' : '' }}" style="position:relative">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg>
         Calls
-        <span class="navbadge" id="waiter-calls-badge" style="display:{{ ($pendingCallCount ?? 0) > 0 ? 'flex' : 'none' }}">{{ $pendingCallCount ?? 0 }}</span>
+        <livewire:waiter.calls-badge />
     </a>
     <a href="{{ route('waiter.profile') }}" class="{{ request()->routeIs('waiter.profile') ? 'active' : '' }}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.8-4 5-6 8-6s6.2 2 8 6"/></svg>

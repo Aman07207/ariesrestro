@@ -6,6 +6,7 @@ use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\SuperAdmin\DemoRequestController;
 use App\Http\Controllers\SuperAdmin\HotelController;
 use App\Http\Controllers\SuperAdmin\PaymentSettingController;
+use App\Http\Controllers\SuperAdmin\PlatformSettingController;
 use App\Http\Controllers\SuperAdmin\PlatformTableController;
 use App\Http\Controllers\SuperAdmin\SalesController;
 use App\Http\Controllers\SuperAdmin\SubscriptionController;
@@ -17,6 +18,8 @@ Route::prefix('super-admin')->name('superadmin.')->middleware(['auth', 'role:sup
     Route::resource('hotels', HotelController::class)->except(['show']);
     Route::resource('subscriptions', SubscriptionController::class)->except(['show']);
     Route::resource('payment-settings', PaymentSettingController::class)->except(['show'])->parameters(['payment-settings' => 'payment_setting']);
+    Route::get('/platform-settings', [PlatformSettingController::class, 'show'])->name('platform-settings');
+    Route::put('/platform-settings', [PlatformSettingController::class, 'update'])->name('platform-settings.update');
     Route::get('/activity', [ActivityLogController::class, 'index'])->name('activity.index');
     Route::get('/demo-requests', [DemoRequestController::class, 'index'])->name('demo-requests.index');
     Route::post('/demo-requests/{demoRequest}/contacted', [DemoRequestController::class, 'markContacted'])->name('demo-requests.contacted');

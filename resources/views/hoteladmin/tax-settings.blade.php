@@ -32,6 +32,18 @@
             <input type="number" step="0.01" name="default_service_charge_percent" value="{{ old('default_service_charge_percent', $hotel->default_service_charge_percent) }}" placeholder="e.g. 10">
             <p class="smallmute" style="text-align:left; margin:4px 0 0;">Shown to customers as a suggestion on their bill screen — by law it's their choice, never added automatically.</p>
 
+            <hr class="dash">
+
+            <label class="flabel">Menu greeting theme</label>
+            <select name="weather_theme_mode">
+                @foreach($modeIcons as $mode => $icon)
+                    <option value="{{ $mode }}" @selected(old('weather_theme_mode', $hotel->weather_theme_mode->value) === $mode)>
+                        {{ $icon }} {{ ucfirst($mode) }}{{ $mode === 'auto' ? ' (follow platform default)' : ' — always show this season here' }}
+                    </option>
+                @endforeach
+            </select>
+            <p class="smallmute" style="text-align:left; margin:4px 0 0;">Overrides the platform-wide default just for this hotel's customer menu greeting card. Leave on "Auto" unless you specifically want this venue to look different from the rest.</p>
+
             <button type="submit" class="btn btn-primary" style="margin-top:18px;">Save changes</button>
         </form>
     </div>

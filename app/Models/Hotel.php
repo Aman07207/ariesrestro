@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\HotelStatus;
+use App\Enums\WeatherThemeMode;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,7 +19,7 @@ class Hotel extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'slug', 'status', 'subscription_plan', 'gst_rate', 'vat_rate', 'is_luxury_hotel', 'default_service_charge_percent', 'gstin', 'google_review_link'])
+            ->logOnly(['name', 'slug', 'status', 'subscription_plan', 'gst_rate', 'vat_rate', 'is_luxury_hotel', 'default_service_charge_percent', 'gstin', 'google_review_link', 'weather_theme_mode'])
             ->logOnlyDirty()
             ->useLogName('hotel');
     }
@@ -43,6 +44,7 @@ class Hotel extends Model
         'vat_rate',
         'is_luxury_hotel',
         'default_service_charge_percent',
+        'weather_theme_mode',
     ];
 
     protected function casts(): array
@@ -56,6 +58,7 @@ class Hotel extends Model
             'vat_rate' => 'decimal:2',
             'is_luxury_hotel' => 'boolean',
             'default_service_charge_percent' => 'decimal:2',
+            'weather_theme_mode' => WeatherThemeMode::class,
         ];
     }
 

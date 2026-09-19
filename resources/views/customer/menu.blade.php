@@ -32,6 +32,18 @@
 
 {{-- Bottom padding clears BOTH fixed layers: the bottom nav (~70px) and the floating cart bar above it (~60px). --}}
 <div class="content" id="menu-list" style="padding-bottom:170px;">
+    {{-- Scrolls away with the list below the sticky menu-header, matching the demo's
+         greeting card scrolling under a lone sticky topbar rather than eating
+         permanent space in this app's pinned topbar+tabs+filter header. --}}
+    <div class="greeting-card theme-{{ $season->value }}">
+        <span class="greeting-deco">{{ $season->deco() }}</span>
+        <span class="greeting-deco">{{ $season->deco() }}</span>
+        <span class="greeting-deco">{{ $season->deco() }}</span>
+        <div class="g-icon">{{ $greeting['icon'] }}</div>
+        <div class="g-title">Howdy! Welcome to {{ $greeting['hotelName'] }}</div>
+        <div class="g-sub">{{ $greeting['text'] }} — perfect for {{ $season->label() }} 🍽️</div>
+    </div>
+
     @foreach($categories as $category)
         @foreach($category->menuItems as $item)
             <div class="menuitem" data-cat="cat-{{ $category->id }}" data-veg="{{ $item->veg_type === 'veg' ? 'veg' : 'nonveg' }}" data-id="{{ $item->id }}" data-price="{{ $item->price }}" data-name="{{ $item->name }}">

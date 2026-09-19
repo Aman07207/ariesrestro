@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HotelAdmin;
 
+use App\Enums\WeatherThemeMode;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HotelAdmin\TaxSettingRequest;
 use App\Services\HotelAdmin\TaxSettingService;
@@ -15,7 +16,10 @@ class TaxSettingController extends Controller
 
     public function show()
     {
-        return view('hoteladmin.tax-settings', ['hotel' => Auth::user()->hotel]);
+        return view('hoteladmin.tax-settings', [
+            'hotel' => Auth::user()->hotel,
+            'modeIcons' => collect(WeatherThemeMode::cases())->mapWithKeys(fn ($mode) => [$mode->value => $mode->icon()]),
+        ]);
     }
 
     public function update(TaxSettingRequest $request)

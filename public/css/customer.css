@@ -68,3 +68,18 @@
 @keyframes pulseRing{0%{transform:scale(.92); opacity:1} 100%{transform:scale(1.12); opacity:0}}
 .scanwrap h2{font-size:18px; font-weight:800; margin-bottom:6px;}
 .scanwrap p{font-size:12.5px; opacity:.75; max-width:250px; line-height:1.5; margin-bottom:26px;}
+
+/* Greeting card — theme + copy are resolved server-side (see MenuController /
+   GreetingService / WeatherThemeService); this is just the visual styling. */
+.greeting-card{position:relative; overflow:hidden; margin:14px 18px 4px; border-radius:16px; padding:16px 18px; color:#fff; transition:background .5s ease;}
+.greeting-card.theme-summer{background:linear-gradient(120deg,#F3401A 0%,#FF9142 100%);}
+.greeting-card.theme-monsoon{background:linear-gradient(120deg,#1C1F26 0%,#2E5C8A 100%);}
+.greeting-card.theme-winter{background:linear-gradient(120deg,#3A4A6B 0%,#7C93B8 100%);}
+.greeting-card .g-icon{font-size:22px;}
+.greeting-card .g-title{font-size:15px; font-weight:800; margin-top:4px;}
+.greeting-card .g-sub{font-size:12px; opacity:.85; margin-top:2px; font-weight:500;}
+.greeting-deco{position:absolute; font-size:26px; opacity:.25; animation:floatDeco 6s ease-in-out infinite;}
+.greeting-deco:nth-child(2){top:8px; right:20px; animation-delay:0s;}
+.greeting-deco:nth-child(3){bottom:-6px; right:60px; font-size:18px; animation-delay:1.2s;}
+.greeting-deco:nth-child(4){top:36px; right:90px; font-size:15px; animation-delay:2.4s;}
+@keyframes floatDeco{0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-6px) rotate(6deg);}}

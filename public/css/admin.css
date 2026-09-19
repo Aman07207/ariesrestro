@@ -1,0 +1,71 @@
+/* Admin dashboard shell (Super Admin + Hotel Admin) — sidebar + topbar + content.
+   Structural shape only (sidebar/topbar/stat-cards/tables is a generic admin-dashboard
+   pattern), styled entirely with Aries Restro's own brand tokens from app.css. */
+
+/* app.css's desktop media query centers `body` into a narrow max-width card for the
+   mobile-first customer/waiter/chef/login pages — since admin pages load app.css too,
+   that rule was squeezing the whole sidebar+content shell into a centered box instead
+   of letting it use the full viewport. Opt out the same way the marketing layout does. */
+body.admin-body{display:block; background:none; padding:0; min-height:auto;}
+
+.admin-shell{display:flex; min-height:100vh;}
+
+.admin-sidebar{
+  width:250px; flex-shrink:0; background:var(--navy); color:#fff;
+  display:flex; flex-direction:column; position:fixed; top:0; bottom:0; left:0; z-index:30;
+  transition:transform .2s ease;
+}
+.admin-sidebar .brand{display:flex; align-items:center; gap:10px; padding:20px 18px; border-bottom:1px solid rgba(255,255,255,.08);}
+.admin-sidebar .brand .logo-dot{width:34px; height:34px; border-radius:10px; background:var(--orange); display:flex; align-items:center; justify-content:center; font-weight:800;}
+.admin-sidebar .brand .btitle{font-weight:800; font-size:15px;}
+.admin-sidebar .brand .bsub{font-size:10.5px; opacity:.6;}
+.admin-nav{flex:1; overflow-y:auto; padding:14px 10px;}
+.admin-nav .navgroup-label{font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; opacity:.45; margin:16px 10px 6px;}
+.admin-nav a{
+  display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px;
+  color:rgba(255,255,255,.72); text-decoration:none; font-size:13.5px; font-weight:600; margin-bottom:2px;
+}
+.admin-nav a svg{width:18px; height:18px; flex-shrink:0;}
+.admin-nav a:hover{background:rgba(255,255,255,.06); color:#fff;}
+.admin-nav a.active{background:var(--orange); color:#fff;}
+.admin-sidebar .sidebar-foot{padding:14px 18px; border-top:1px solid rgba(255,255,255,.08); font-size:11.5px; opacity:.6;}
+
+.admin-main{flex:1; margin-left:250px; display:flex; flex-direction:column; min-width:0;}
+.admin-topbar{
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; position:sticky; top:0; z-index:20;
+}
+.admin-topbar .topbar-left{display:flex; align-items:center; gap:12px; min-width:0; flex:1;}
+.admin-topbar h1{font-size:18px; font-weight:800; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.admin-topbar .topbar-actions{display:flex; align-items:center; gap:12px; flex-shrink:0;}
+.admin-topbar .who{font-size:12.5px; color:var(--navy-soft); text-align:right; white-space:nowrap;}
+.admin-topbar .who b{color:var(--navy); display:block; font-size:13px;}
+.sidebar-toggle{display:none; background:none; border:none; cursor:pointer; color:var(--navy); padding:6px;}
+
+.admin-content{padding:24px; flex:1;}
+
+.statgrid-admin{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:24px;}
+.stat-tile{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px;}
+.stat-tile .st-label{font-size:11.5px; color:var(--navy-soft); font-weight:700; text-transform:uppercase; letter-spacing:.03em;}
+.stat-tile .st-value{font-size:26px; font-weight:800; margin-top:8px;}
+
+.panel{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:20px;}
+.panel-head{padding:16px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;}
+.panel-head h3{font-size:15px; font-weight:800;}
+.panel-body{padding:18px;}
+
+table.admin-table{width:100%; border-collapse:collapse; font-size:13px;}
+table.admin-table th{text-align:left; padding:10px 12px; font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--navy-soft); border-bottom:1px solid var(--border); font-weight:700;}
+table.admin-table td{padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;}
+table.admin-table tr:last-child td{border-bottom:none;}
+table.admin-table .row-actions{display:flex; gap:8px;}
+.table-scroll{overflow-x:auto;}
+
+.form-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:0 16px;}
+
+@media (max-width:960px){
+  .admin-sidebar{transform:translateX(-100%);}
+  .admin-sidebar.open{transform:translateX(0);}
+  .admin-main{margin-left:0;}
+  .sidebar-toggle{display:inline-flex; align-items:center; justify-content:center;}
+}

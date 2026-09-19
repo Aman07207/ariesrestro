@@ -1,0 +1,30 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('menu_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('hotel_id')->constrained('hotels')->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained('menu_categories')->cascadeOnDelete();
+            $table->string('name');
+            $table->decimal('price', 10, 2);
+            $table->string('veg_type')->default('veg');
+            $table->boolean('is_available')->default(true);
+            $table->string('image')->nullable();
+            $table->decimal('avg_rating', 2, 1)->nullable();
+            $table->boolean('is_popular')->default(false);
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('menu_items');
+    }
+};

@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:themesbrand.com)",
+      "Bash(php -m)",
+      "Bash(ls -la \"C:/Users/hp/AppData/Local/Temp/claude/d--wamp-www-aries-restro/c17f577e-1815-4315-9873-38793518c0fa/scratchpad\" 2>&1; echo \"---\"; find \"C:/Users/hp/AppData/Local/Temp/claude\" -newer \"D:/wamp/www/aries-restro/.env\" -iname \"*.png\" -o -newer \"D:/wamp/www/aries-restro/.env\" -iname \"*.jpg\" 2>&1 | head -20)",
+      "Read(//c/Users/hp/AppData/Local/Temp/claude/**)",
+      "Bash(grep -A15 'protected $fillable' app/Models/Order.php app/Models/OrderItem.php)",
+      "Bash(grep -n 'withUnencryptedCookies\\($cookies\\)->postJson' tests/Feature/OrderPlacementAndCancellationTest.php)",
+      "Bash(rm -f app/Models/HotelTaxSetting.php)",
+      "Bash(rm -f app/Services/SuperAdmin/TaxSettingService.php)",
+      "Bash(rm -f app/Http/Controllers/SuperAdmin/TaxSettingController.php)",
+      "Bash(rm -f app/Http/Requests/SuperAdmin/TaxSettingRequest.php)",
+      "Bash(rm -rf resources/views/superadmin/tax-settings)",
+      "Bash(rm -f database/migrations/2026_09_17_175511_create_hotel_tax_settings_table.php)",
+      "Bash(rm -f database/migrations/2026_09_17_175512_add_tax_columns_to_orders_table.php)",
+      "Bash(rm -f database/migrations/2026_09_17_182103_drop_tax_columns_from_orders_table.php)",
+      "Bash(rm -f database/migrations/2026_09_17_182104_drop_hotel_tax_settings_table.php)",
+      "Bash(rm -f database/migrations/2026_09_17_182059_add_tax_track_to_menu_items_table.php)",
+      "Bash(rm -f database/migrations/2026_09_17_182100_add_tax_fields_to_hotels_table.php)",
+      "Bash(rm -f database/migrations/2026_09_17_182101_create_bills_table.php)",
+      "Bash(rm -f database/migrations/2026_09_17_182102_add_bill_id_to_payments_table.php)",
+      "Bash(git --version)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}

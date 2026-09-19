@@ -1,0 +1,145 @@
+:root{
+  --orange:#F3401A; --orange-dark:#C62E10; --orange-tint:#FFEDE7;
+  --navy:#1C1F26; --navy-soft:#5B5F68;
+  --bg:#F4F3F0; --surface:#FFFFFF; --border:#EAE7E2;
+  --green:#1F9D63; --green-tint:#E5F7EE;
+  --amber:#E08A1E; --amber-tint:#FFF2DE;
+  --red:#E0403F; --red-tint:#FCE9E9;
+  --radius:16px; --radius-sm:10px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+/* min-height, never a fixed height: a fixed height on body makes the desktop-card
+   .screen (a flex child) inherit a definite height, so long pages overflow past the
+   card's edge and flex children (tabs, filters) get squashed to fit it. */
+html{min-height:100%;}
+body{min-height:100vh;}
+body{background:var(--bg); color:var(--navy); overflow-x:hidden; -webkit-font-smoothing:antialiased;}
+
+.screen{min-height:100vh; display:flex; flex-direction:column; background:var(--bg);}
+
+/* On phones this stays full-bleed (as designed). On anything wider, give the app a
+   centered "card" presence instead of the form/content floating on an empty page —
+   the finalized mockups solved this with a phone-bezel graphic; real production pages
+   don't get to use that trick, so this is the desktop equivalent. */
+@media (min-width:560px){
+  body{
+    background:#E7E5E0;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start; /* let the card grow with its content instead of stretching to a fixed height */
+    padding:32px 16px;
+  }
+  .screen{
+    max-width:520px;
+    width:100%;
+    min-height:calc(100vh - 64px);
+    border-radius:22px;
+    box-shadow:0 24px 60px -20px rgba(28,31,38,.28), 0 2px 10px rgba(0,0,0,.06);
+  }
+  /* .topbar/.bottomnav have their own (different) background, so they need their own
+     corner-rounding to match .screen's — everything else already sits on .screen's own
+     background and rounds along with it for free. */
+  .topbar{border-radius:22px 22px 0 0;}
+  .bottomnav{border-radius:0 0 22px 22px;}
+}
+
+.topbar{padding:16px 18px 12px; display:flex; align-items:center; justify-content:space-between; background:var(--surface); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:3; box-shadow:0 2px 10px rgba(28,31,38,.03);}
+.topbar h2{font-size:17px; font-weight:800;}
+.topbar .sub{font-size:11.5px; color:var(--navy-soft); font-weight:500; margin-top:1px;}
+.topbar-left{display:flex; align-items:center; gap:10px;}
+.iconbtn{width:34px; height:34px; border-radius:10px; background:var(--bg); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--navy); flex-shrink:0;}
+.iconbtn:active{transform:scale(.94);}
+
+.content{padding:16px 18px 96px; flex:1; max-width:520px; width:100%; margin:0 auto;}
+
+.btn{display:flex; align-items:center; justify-content:center; gap:6px; width:100%; padding:14px; border-radius:14px; border:none; font-family:inherit; font-weight:700; font-size:14.5px; cursor:pointer; transition:.15s; text-decoration:none;}
+.btn:active{transform:scale(.98);}
+.btn-primary{background:var(--orange); color:#fff;}
+.btn-primary:hover{background:var(--orange-dark);}
+.btn-dark{background:var(--navy); color:#fff;}
+.btn-outline{background:#fff; border:1.5px solid var(--border); color:var(--navy);}
+.btn-sm{padding:9px 14px; font-size:12.5px; border-radius:10px; width:auto;}
+
+.card{background:var(--surface); border-radius:var(--radius); padding:14px; border:1px solid var(--border);}
+.badge{display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:999px;}
+.badge-pending{background:#EFEFEF; color:#5B5F68;}
+.badge-preparing{background:var(--amber-tint); color:var(--amber);}
+.badge-ready{background:var(--green-tint); color:var(--green);}
+.badge-served{background:#E8ECFA; color:#3B4FBF;}
+.badge-cancelled{background:var(--red-tint); color:var(--red);}
+
+/* Real viewport-level nav/toast — the source files used position:absolute/sticky only to
+   confine these inside a fixed-height mock phone div, which no longer exists here. */
+.bottomnav{
+  position:fixed; left:0; right:0; bottom:0;
+  background:#fff; border-top:1px solid var(--border);
+  display:flex; padding:8px 6px calc(14px + env(safe-area-inset-bottom));
+  z-index:40; box-shadow:0 -4px 16px rgba(0,0,0,.04);
+  max-width:520px; margin:0 auto;
+}
+/* Bottom nav mixes <a> (real pages) and <button> (JS-triggered actions like the waiter
+   call modal) — both need identical styling, so both are targeted here. Missing the `a`
+   selector was a real bug: nav links were rendering as plain unstyled browser links. */
+.bottomnav button, .bottomnav a{flex:1; background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; font-family:inherit; font-size:10px; font-weight:700; color:#B5B2AC; cursor:pointer; position:relative; padding:5px 2px; border-radius:12px; transition:.15s; text-decoration:none;}
+.bottomnav button.active, .bottomnav a.active{color:var(--orange); background:var(--orange-tint);}
+.bottomnav button:active, .bottomnav a:active{transform:scale(.93);}
+.bottomnav svg{width:21px; height:21px;}
+.navbadge{position:absolute; top:-2px; right:22%; background:var(--orange); color:#fff; font-size:9px; font-weight:800; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center;}
+
+.overlay{position:fixed; inset:0; background:rgba(20,18,15,.5); z-index:50; display:none; align-items:flex-end; justify-content:center;}
+.overlay.active{display:flex;}
+.overlay.center-modal{align-items:center;}
+.sheet{background:#fff; width:100%; max-width:520px; border-radius:24px 24px 0 0; padding:20px 20px 28px; max-height:88vh; overflow-y:auto; animation:slideUp .28s ease;}
+@keyframes slideUp{from{transform:translateY(30px); opacity:0} to{transform:translateY(0); opacity:1}}
+.popcard{background:#fff; border-radius:20px; padding:26px 22px; width:min(360px,86%); text-align:center; animation:slideUp .25s ease;}
+
+textarea, select,
+input[type=text], input[type=number], input[type=password],
+input[type=email], input[type=date], input[type=tel]
+{width:100%; border:1.5px solid var(--border); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:13px; color:var(--navy); background:#fff;}
+textarea{resize:none; min-height:56px;}
+label.flabel{font-size:11.5px; font-weight:700; color:var(--navy-soft); display:block; margin:12px 0 5px;}
+
+.billrow{display:flex; justify-content:space-between; font-size:13px; padding:6px 0; color:var(--navy-soft);}
+.billrow.total{color:var(--navy); font-weight:800; font-size:15px; border-top:1.5px dashed var(--border); margin-top:6px; padding-top:12px;}
+
+.memberblock{margin-bottom:16px;}
+.memberhead{font-size:12px; font-weight:800; color:var(--navy-soft); text-transform:uppercase; letter-spacing:.03em; margin-bottom:8px; display:flex; align-items:center; gap:6px;}
+.orderitem{display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:#fff; border:1px solid var(--border); border-radius:11px; margin-bottom:8px;}
+.orderitem .oi-name{font-size:13px; font-weight:700;}
+.orderitem .oi-qty{font-size:11px; color:var(--navy-soft); font-weight:600;}
+
+.emptystate{display:flex; flex-direction:column; align-items:center; text-align:center; padding:60px 30px; color:var(--navy-soft);}
+.emptystate .em-ic{width:62px; height:62px; border-radius:50%; background:var(--orange-tint); color:var(--orange); display:flex; align-items:center; justify-content:center; margin-bottom:14px;}
+.emptystate h4{color:var(--navy); font-size:15px; margin-bottom:4px;}
+.emptystate p{font-size:12.5px; line-height:1.5;}
+
+.toast{position:fixed; top:16px; left:16px; right:16px; max-width:488px; margin:0 auto; background:var(--navy); color:#fff; padding:12px 16px; border-radius:12px; font-size:12.5px; font-weight:600; display:flex; align-items:center; gap:8px; z-index:60; opacity:0; pointer-events:none; transition:.3s;}
+.toast.show{opacity:1; transform:translateY(4px);}
+
+.sectiontitle{font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.03em; color:var(--navy-soft); margin:18px 0 10px;}
+hr.dash{border:none; border-top:1.5px dashed var(--border); margin:14px 0;}
+/* `a.smallmute` (element+class) matches the browser's own `a:link` specificity instead of
+   losing to it — a plain `.smallmute` class alone was being outranked by the UA stylesheet,
+   which is why "Forgot password?" rendered as a plain blue underlined link. */
+.smallmute, a.smallmute{font-size:11px; color:var(--navy-soft); text-align:center; margin-top:12px; text-decoration:none;}
+a.smallmute:hover{color:var(--orange);}
+
+.loginwrap{flex:1; display:flex; flex-direction:column; justify-content:center; padding:30px 26px; max-width:420px; width:100%; margin:0 auto;}
+.loginwrap .lg{width:56px; height:56px; border-radius:16px; background:var(--orange); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:24px; margin-bottom:18px;}
+.loginwrap h2{font-size:21px; font-weight:800; margin-bottom:4px;}
+.loginwrap p{font-size:12.5px; color:var(--navy-soft); margin-bottom:26px;}
+
+.profile-hero{display:flex; align-items:center; gap:14px; background:var(--navy); color:#fff; border-radius:16px; padding:18px;}
+.profile-hero .avatar{width:52px; height:52px; border-radius:50%; background:var(--orange); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px; flex-shrink:0;}
+.profile-hero .pname{font-size:15.5px; font-weight:800;}
+.profile-hero .prole{font-size:11.5px; opacity:.75; margin-top:2px;}
+.infolist{padding:4px 14px;}
+.inforow{display:flex; justify-content:space-between; align-items:center; padding:11px 0; font-size:12.5px; color:var(--navy-soft); border-bottom:1px solid var(--border);}
+.inforow:last-child{border-bottom:none;}
+.inforow b{color:var(--navy); font-weight:700; font-size:13px;}
+.statgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+.statcard{background:#fff; border:1px solid var(--border); border-radius:14px; padding:14px 8px; text-align:center;}
+.statcard .sv{font-size:16px; font-weight:800;}
+.statcard .sl{font-size:9.5px; color:var(--navy-soft); font-weight:700; margin-top:3px; text-transform:uppercase; letter-spacing:.02em;}

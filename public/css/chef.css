@@ -1,0 +1,16 @@
+.menuitem{display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--border); align-items:center;}
+.menuitem:last-child{border-bottom:none;}
+.menuitem-thumb{width:44px; height:44px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:18px;}
+.menuitem-info{flex:1; min-width:0;}
+.menuitem-info .name{font-size:14px; font-weight:700;}
+.menuitem-info .desc{font-size:11.5px; color:var(--navy-soft); margin:0;}
+
+.kanban{display:flex; gap:10px; padding:0 12px 20px; overflow-x:auto;}
+.kancol{flex-shrink:0; width:184px;}
+.kancol h4{font-size:12px; font-weight:800; padding:8px 4px; display:flex; align-items:center; gap:6px;}
+.kancol h4 i{width:8px; height:8px; border-radius:50%; display:inline-block;}
+.kancard{background:#fff; border:1px solid var(--border); border-radius:12px; padding:11px; margin-bottom:9px;}
+.kancard .kt{font-size:10.5px; font-weight:800; color:var(--orange); margin-bottom:4px;}
+.kancard .kn{font-size:13px; font-weight:700;}
+.kancard .kq{font-size:11px; color:var(--navy-soft); margin:2px 0 8px;}
+.kancard .ki{font-size:10.5px; color:var(--navy-soft); font-style:italic; margin-bottom:8px;}

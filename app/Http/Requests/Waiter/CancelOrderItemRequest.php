@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Http\Requests\Waiter;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class CancelOrderItemRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'reason' => ['required', 'string', 'in:Customer request,Item unavailable,Kitchen error,Other'],
+            'note' => ['nullable', 'string', 'max:250'],
+        ];
+    }
+}

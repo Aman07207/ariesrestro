@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(netstat -ano)",
+      "Read(//d/wamp/bin/mysql/mysql8.3.0/**)",
+      "Read(//d/wamp/alias/**)",
+      "Read(//d/wamp/**)",
+      "Bash(\"/d/wamp/bin/mysql/mysql8.3.0/bin/mysql.exe\" -u root --port=3308 -h 127.0.0.1 --protocol=TCP -e \"CREATE DATABASE IF NOT EXISTS aries_restro CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\")",
+      "Bash(\"/d/wamp/bin/mysql/mysql8.3.0/bin/mysql.exe\" -u root --port=3308 -h 127.0.0.1 --protocol=TCP -e \"SHOW DATABASES LIKE 'aries_restro';\")",
+      "Bash(php artisan *)",
+      "Bash(composer require *)",
+      "Bash(\"/d/wamp/bin/mysql/mysql8.3.0/bin/mysql.exe\" -u root --port=3308 -h 127.0.0.1 --protocol=TCP -e \"SHOW VARIABLES LIKE 'innodb_large_prefix'; SHOW VARIABLES LIKE 'innodb_file_format'; SHOW VARIABLES LIKE 'innodb_default_row_format'; SELECT @@version;\")"
+    ]
+  }
+}

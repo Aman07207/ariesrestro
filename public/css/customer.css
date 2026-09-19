@@ -1,0 +1,70 @@
+.badge-veg{width:14px; height:14px; border:1.5px solid var(--green); border-radius:3px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;}
+.badge-veg::after{content:""; width:7px; height:7px; background:var(--green); border-radius:50%;}
+.badge-nonveg{border-color:var(--red);}
+.badge-nonveg::after{background:var(--red); border-radius:0; clip-path:polygon(50% 0,0 100%,100% 100%);}
+
+/* Topbar + category tabs + veg filter pinned together as one block, so the list scrolls
+   underneath a single header instead of tabs sliding under a lone sticky topbar. */
+.menu-header{position:sticky; top:0; z-index:10; flex-shrink:0; background:var(--surface); box-shadow:0 2px 10px rgba(28,31,38,.05);}
+.menu-header .topbar{position:relative; box-shadow:none; z-index:auto;}
+.cattabs,.filterrow{flex-shrink:0;}
+@media (min-width:560px){ .menu-header{border-radius:22px 22px 0 0;} }
+
+.cattabs{display:flex; gap:8px; overflow-x:auto; padding:12px 18px; background:var(--surface); border-bottom:1px solid var(--border); -webkit-overflow-scrolling:touch;}
+.cattabs::-webkit-scrollbar{display:none;}
+.cattab{flex-shrink:0; padding:8px 15px; border-radius:999px; background:var(--bg); font-size:12.5px; font-weight:700; color:var(--navy-soft); cursor:pointer; white-space:nowrap; border:1px solid transparent; transition:.15s; text-decoration:none; display:inline-block;}
+.cattab.active{background:var(--navy); color:#fff;}
+.cattab:active{transform:scale(.95);}
+
+.filterrow{display:flex; gap:8px; padding:12px 18px; background:var(--surface); border-bottom:1px solid var(--border);}
+.filterchip{padding:6px 12px; border-radius:8px; background:var(--bg); border:1px solid var(--border); font-size:11.5px; font-weight:700; color:var(--navy-soft); cursor:pointer; display:flex; align-items:center; gap:5px; transition:.15s;}
+.filterchip.active{border-color:var(--orange); color:var(--orange); background:var(--orange-tint);}
+
+.menuitem{display:flex; gap:12px; padding:14px; background:#fff; border-radius:16px; margin-bottom:10px; border:1px solid var(--border); box-shadow:0 1px 4px rgba(28,31,38,.05); transition:.15s;}
+.menuitem:active{transform:scale(.99); box-shadow:none;}
+.menuitem-thumb{width:68px; height:68px; border-radius:14px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:28px; position:relative;}
+.menuitem-info{flex:1; min-width:0;}
+.menuitem-info .name{font-size:14px; font-weight:700; display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+.menuitem-info .desc{font-size:11.5px; color:var(--navy-soft); margin:3px 0 7px; line-height:1.4;}
+.menuitem-info .pricerow{display:flex; align-items:center; gap:8px; margin-bottom:9px;}
+.menuitem-info .price{font-size:14px; font-weight:800;}
+.tag-popular{font-size:9px; font-weight:800; color:var(--orange); background:var(--orange-tint); padding:2px 7px; border-radius:999px; text-transform:uppercase; letter-spacing:.02em;}
+.rating{font-size:10.5px; color:var(--navy-soft); font-weight:700; display:flex; align-items:center; gap:3px;}
+.qtystepper{display:inline-flex; align-items:center; gap:12px; background:var(--orange); border-radius:999px; padding:7px 14px;}
+.qtystepper button{background:none; border:none; color:#fff; font-weight:800; font-size:16px; cursor:pointer; line-height:1; transition:.1s;}
+.qtystepper button:active{transform:scale(.8);}
+.qtystepper span{color:#fff; font-weight:800; font-size:13px; min-width:12px; text-align:center;}
+.addbtn{background:#fff; border:1.5px solid var(--orange); color:var(--orange); font-weight:800; font-size:12px; padding:7px 18px; border-radius:999px; cursor:pointer; align-self:flex-start; transition:.15s;}
+.addbtn:active{transform:scale(.94); background:var(--orange-tint);}
+
+.stickycart{
+  position:fixed; left:14px; right:14px; bottom:86px; max-width:492px; margin:0 auto;
+  background:var(--navy); color:#fff; padding:14px 18px; border-radius:16px;
+  display:flex; align-items:center; justify-content:space-between; cursor:pointer;
+  box-shadow:0 10px 24px rgba(0,0,0,.28); z-index:35; animation:popIn .25s ease; text-decoration:none;
+}
+@keyframes popIn{from{transform:translateY(12px) scale(.96); opacity:0} to{transform:translateY(0) scale(1); opacity:1}}
+.stickycart:active{transform:scale(.98);}
+.stickycart.hidden{display:none;}
+.stickycart .l{font-size:12px; font-weight:600; opacity:.8;}
+.stickycart .amt{font-size:15px; font-weight:800; margin-top:1px;}
+.stickycart .r{display:flex; align-items:center; gap:6px; font-weight:800; font-size:13.5px; color:#fff; background:var(--orange); padding:8px 14px; border-radius:999px;}
+
+.cartline{display:flex; gap:10px; padding:12px 0; border-bottom:1px solid var(--border); align-items:flex-start;}
+.cartline .ci-name{font-weight:700; font-size:13.5px;}
+.cartline .ci-price{font-size:12.5px; font-weight:700; color:var(--navy-soft); margin-top:4px;}
+
+.steprow{display:flex; align-items:flex-start; margin:6px 0 20px;}
+.stepcol{display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0;}
+.stepdot{width:26px; height:26px; border-radius:50%; background:var(--bg); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:var(--navy-soft); flex-shrink:0;}
+.stepdot.done{background:var(--orange); border-color:var(--orange); color:#fff;}
+.stepline{flex:1; height:2px; background:var(--border); margin-top:13px;}
+.stepline.done{background:var(--orange);}
+.steplabel{font-size:9px; font-weight:700; color:var(--navy-soft); white-space:nowrap;}
+
+.scanwrap{flex:1; background:radial-gradient(circle at 50% 30%, #2A2E3A 0%, var(--navy) 70%); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px; color:#fff; text-align:center;}
+.scanbox{width:180px; height:180px; border:3px dashed rgba(243,64,26,.5); border-radius:20px; display:flex; align-items:center; justify-content:center; margin-bottom:26px; position:relative;}
+.scanbox::before{content:""; position:absolute; inset:-14px; border:2px solid rgba(243,64,26,.35); border-radius:28px; animation:pulseRing 2.2s ease-out infinite;}
+@keyframes pulseRing{0%{transform:scale(.92); opacity:1} 100%{transform:scale(1.12); opacity:0}}
+.scanwrap h2{font-size:18px; font-weight:800; margin-bottom:6px;}
+.scanwrap p{font-size:12.5px; opacity:.75; max-width:250px; line-height:1.5; margin-bottom:26px;}

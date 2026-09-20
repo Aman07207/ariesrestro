@@ -9,7 +9,11 @@
       "Bash(\"/d/wamp/bin/mysql/mysql8.3.0/bin/mysql.exe\" -u root --port=3308 -h 127.0.0.1 --protocol=TCP -e \"SHOW DATABASES LIKE 'aries_restro';\")",
       "Bash(php artisan *)",
       "Bash(composer require *)",
-      "Bash(\"/d/wamp/bin/mysql/mysql8.3.0/bin/mysql.exe\" -u root --port=3308 -h 127.0.0.1 --protocol=TCP -e \"SHOW VARIABLES LIKE 'innodb_large_prefix'; SHOW VARIABLES LIKE 'innodb_file_format'; SHOW VARIABLES LIKE 'innodb_default_row_format'; SELECT @@version;\")"
+      "Bash(\"/d/wamp/bin/mysql/mysql8.3.0/bin/mysql.exe\" -u root --port=3308 -h 127.0.0.1 --protocol=TCP -e \"SHOW VARIABLES LIKE 'innodb_large_prefix'; SHOW VARIABLES LIKE 'innodb_file_format'; SHOW VARIABLES LIKE 'innodb_default_row_format'; SELECT @@version;\")",
+      "Bash(git check-ignore *)",
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'Real-time order flow \\(Reverb + polling fallback\\), chef/waiter fixes, staff management *)",
+      "Bash(git push *)"
     ]
   }
 }

@@ -3,6 +3,8 @@
 namespace App\Services\Waiter;
 
 use App\Enums\OrderItemStatus;
+use App\Events\OrderItemStatusChanged;
+use App\Support\Realtime;
 use App\Models\OrderItem;
 use App\Models\Table;
 use App\Models\User;
@@ -36,6 +38,8 @@ class OrderItemService
             'cancel_reason' => $reason,
             'cancelled_by' => $waiter->id,
         ]);
+
+        Realtime::dispatch(OrderItemStatusChanged::for($orderItem));
 
         // No Order-level total to keep in sync anymore — tax/totals are a session-level
         // Bill concern (BillingService), computed fresh from non-cancelled order_items

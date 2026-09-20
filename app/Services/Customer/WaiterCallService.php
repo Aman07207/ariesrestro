@@ -6,6 +6,7 @@ use App\Enums\WaiterCallStatus;
 use App\Events\WaiterCallCreated;
 use App\Models\OrderSession;
 use App\Models\WaiterCall;
+use App\Support\Realtime;
 
 class WaiterCallService
 {
@@ -18,7 +19,7 @@ class WaiterCallService
             'note' => $note,
         ]);
 
-        broadcast(new WaiterCallCreated($call, $session->hotel_id));
+        Realtime::dispatch(new WaiterCallCreated($call, $session->hotel_id));
 
         return $call;
     }

@@ -11,25 +11,26 @@
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 @stack('styles')
 @livewireStyles
-@auth
-    @if(auth()->user()->role === \App\Enums\UserRole::Waiter)
-        <script src="https://cdn.jsdelivr.net/npm/pusher-js@8.6.0/dist/web/pusher.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/laravel-echo@2.5.0/dist/echo.iife.js"></script>
-        <script>
-            window.Pusher = Pusher;
-            window.Echo = new Echo.default({
-                broadcaster: 'reverb',
-                key: @json(config('broadcasting.connections.reverb.key')),
-                wsHost: @json(config('broadcasting.connections.reverb.options.host')),
-                wsPort: {{ (int) config('broadcasting.connections.reverb.options.port', 80) }},
-                wssPort: {{ (int) config('broadcasting.connections.reverb.options.port', 443) }},
-                forceTLS: {{ config('broadcasting.connections.reverb.options.scheme') === 'https' ? 'true' : 'false' }},
-                enabledTransports: ['ws', 'wss'],
-                csrfToken: document.querySelector('meta[name="csrf-token"]')?.content,
-            });
-        </script>
-    @endif
-@endauth
+@php
+    // Realtime is for the kitchen/floor staff (private channels) and for the customer's
+    // tracking page (public channel); admins and other pages don't need a socket.
+    $realtime = auth()->check()
+        ? in_array(auth()->user()->role, [\App\Enums\UserRole::Waiter, \App\Enums\UserRole::Chef], true)
+        : isset($table);
+@endphp
+@if($realtime)
+    <script src="https://cdn.jsdelivr.net/npm/pusher-js@8.6.0/dist/web/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/laravel-echo@2.5.0/dist/echo.iife.js"></script>
+    <script>
+        window.ARIES_RT = {
+            key: @json(config('broadcasting.connections.reverb.key')),
+            host: @json(config('broadcasting.connections.reverb.options.host')),
+            port: {{ (int) config('broadcasting.connections.reverb.options.port', 8080) }},
+            scheme: @json(config('broadcasting.connections.reverb.options.scheme', 'http')),
+        };
+    </script>
+    <script src="{{ asset('js/realtime.js') }}"></script>
+@endif
 </head>
 <body>
 <div class="screen">
@@ -45,11 +46,10 @@ window.ARIES_CALL_WAITER_URL = @json(route('customer.call-waiter'));
 @endisset
 <script src="{{ asset('js/shared.js') }}"></script>
 @livewireScripts
-@auth
-    @if(auth()->user()->role === \App\Enums\UserRole::Waiter)
-        <script src="{{ asset('js/waiter-bell.js') }}"></script>
-    @endif
-@endauth
+@if($realtime)
+    <div id="aries-rt"><span id="aries-rt-dot" data-state="connecting"></span><button type="button" id="aries-rt-sound"></button></div>
+    <script src="{{ asset('js/notify.js') }}"></script>
+@endif
 @stack('scripts')
 </body>
 </html>

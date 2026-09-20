@@ -18,7 +18,7 @@ Five apps live in this one Laravel codebase:
 
 - **Laravel 13** (PHP 8.3) + MySQL
 - Blade views, vanilla JS/CSS (no frontend framework, no Vite build — plain files in `public/css` and `public/js`)
-- `spatie/laravel-permission` (roles), `spatie/laravel-activitylog` (audit trail), `endroid/qr-code` (QR generation), `laravel/reverb` (installed, not yet wired for realtime)
+- `spatie/laravel-permission` (roles), `spatie/laravel-activitylog` (audit trail), `endroid/qr-code` (QR generation), `laravel/reverb` (WebSocket realtime, with polling fallback)
 
 ---
 
@@ -146,13 +146,22 @@ Being upfront about the boundary, since a lot of this app *looks* fully function
 - **Cart & order placement**: the customer menu/cart pages are client-side JS only (`sessionStorage`), matching the finalized UI's interactive demo. "Place order" doesn't hit the database yet.
 - **Waiter/Chef actions**: cancel item, transfer table, mark item status, toggle stock — all show a toast and update the DOM, but don't persist. The underlying data (tables, menu, staff, order history) is real; these specific actions aren't yet. ("Call Waiter" and "Mark attended" **are** real now — see below.)
 - **Payments**: the Razorpay flow is a UI walkthrough only — no real Razorpay integration yet.
-- **Realtime**: `laravel/reverb` is installed but not wired up for broadcasting. The waiter-call sound alert (below) uses short-interval polling instead, not a live push — an honest stand-in until Reverb is wired.
+- **Realtime**: wired — see "Real-time order flow" below.
 
 Real and persisting to MySQL: auth, role-based access control, multi-tenant isolation, the full CRUD for hotels/subscriptions/payment settings/tables/menu/staff, QR code generation (any hotel, from Super Admin or Hotel Admin), the visual theme, the Home page's demo-request lead capture, and:
 
 - **"Call Waiter"**: a customer tapping it creates a real `WaiterCall` row. Any open Waiter screen polls every ~8s and plays an audible bell (synthesized via the Web Audio API — no sound file to manage) the moment a genuinely new call arrives; "Mark attended" on the Waiter Calls page is a real status update, not a demo toggle.
 - **Super Admin at scale**: Tables & QR codes is a searchable hotel picker rather than one flat list — built for the 100+ hotel case, not just the single demo hotel. Sales and Active Customers get a `?hotel=` filter for the same reason.
 
+## Real-time order flow
+
+Customer places an order → **Chef** hears a ~2s tone and sees the card appear → chef taps *Start preparing / Mark ready* → **Waiter** hears a chime when items are ready and sees table colours/counts update → **Customer**'s status page updates and chimes. No page refreshes.
+
+- **Start the socket server**: run `start-realtime.bat` (or `php artisan reverb:start`) and keep it open. `.env` needs `BROADCAST_CONNECTION=reverb` plus the `REVERB_*` values (see `.env.example`).
+- **Fallback**: every live screen also polls every ~10s, so if Reverb is stopped the screens still update (a red dot bottom-left shows "offline"; green = live).
+- **Sound**: browsers block audio until you tap the page once — a "Tap to enable sound" chip stays visible until that has happened; tap it afterwards to mute/unmute.
+- **Channels**: staff use the private channel `hotel.{id}.orders` (only that hotel's chef/waiter/manager/admin); customers use a public channel keyed by an HMAC of their session id (never the session token).
+- **Code**: events `OrderPlaced` / `OrderItemStatusChanged`; Livewire `Chef\QueueBoard`, `Waiter\TablesGrid`, `Waiter\TableDetail`, `Customer\TrackOrder`; JS `public/js/realtime.js` + `notify.js`.
 ---
 
 ## Tests

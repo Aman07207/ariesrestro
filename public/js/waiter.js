@@ -67,8 +67,85 @@ function confirmBill() {
   setTimeout(() => { window.location.href = window.ARIES_TABLES_URL || '/waiter/tables'; }, 600);
 }
 
+// Manual order: lines are built locally, then sent in one POST. Only ids/qty/notes go up —
+// the server prices everything itself.
+const manualLines = [];
+
+function renderManualLines() {
+  const box = document.getElementById('manual-lines');
+  if (!box) return;
+  box.textContent = '';
+  if (manualLines.length === 0) {
+    const p = document.createElement('p');
+    p.className = 'smallmute';
+    p.style.textAlign = 'left';
+    p.textContent = 'Nothing added yet.';
+    box.appendChild(p);
+    return;
+  }
+  manualLines.forEach((line, i) => {
+    const row = document.createElement('div');
+    row.className = 'orderitem';
+    const left = document.createElement('div');
+    const name = document.createElement('div');
+    name.className = 'oi-name';
+    name.textContent = line.name; // textContent, never innerHTML — names/notes are untrusted text
+    const meta = document.createElement('div');
+    meta.className = 'oi-qty';
+    meta.textContent = 'Qty ' + line.quantity + (line.note ? ' · ' + line.note : '');
+    left.append(name, meta);
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'iconbtn';
+    remove.style.cssText = 'width:26px; height:26px;';
+    remove.textContent = '×';
+    remove.onclick = () => { manualLines.splice(i, 1); renderManualLines(); };
+    row.append(left, remove);
+    box.appendChild(row);
+  });
+}
+
+function addManualLine() {
+  const select = document.getElementById('manual-item');
+  const opt = select.options[select.selectedIndex];
+  if (!opt) return;
+  const quantity = Math.max(1, Math.min(20, parseInt(document.getElementById('manual-qty').value, 10) || 1));
+  manualLines.push({
+    menu_item_id: parseInt(select.value, 10),
+    name: opt.dataset.name,
+    quantity,
+    note: document.getElementById('manual-note').value.trim(),
+  });
+  document.getElementById('manual-qty').value = 1;
+  document.getElementById('manual-note').value = '';
+  renderManualLines();
+}
+
 function submitManualOrder() {
-  const tableSelect = document.getElementById('manual-table');
-  const label = tableSelect ? tableSelect.options[tableSelect.selectedIndex].text : '';
-  showToast('Item added to ' + label + ' order');
+  if (manualLines.length === 0) { showToast('Add at least one item first'); return; }
+  const button = document.getElementById('manual-send');
+  button.disabled = true;
+
+  fetch(window.ARIES_MANUAL_ORDER_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      table_id: parseInt(document.getElementById('manual-table').value, 10),
+      items: manualLines.map(l => ({ menu_item_id: l.menu_item_id, quantity: l.quantity, note: l.note })),
+    }),
+  })
+    .then(async (res) => {
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.message || 'Could not place the order');
+      showToast(data.message);
+      setTimeout(() => { window.location.href = data.redirect; }, 700);
+    })
+    .catch((err) => {
+      showToast(err.message);
+      button.disabled = false;
+    });
 }

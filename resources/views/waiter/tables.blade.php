@@ -20,28 +20,7 @@
     <span><i style="background:var(--red)"></i>Bill requested</span>
 </div>
 <div class="content">
-    <div class="tablegrid">
-        @foreach($tables as $t)
-            @php
-                $cls = $t['colorClass'];
-                $label = $cls === 'bill' ? 'Bill requested' : $cls;
-            @endphp
-            @if($cls === 'available')
-                <div class="tabletile available">
-                    <div class="tno">Table {{ $t['table']->table_number }}</div>
-                    <div><div class="tstatus">available</div></div>
-                </div>
-            @else
-                <a href="{{ route('waiter.tables.show', $t['table']) }}" class="tabletile {{ $cls }}">
-                    <div class="tno">Table {{ $t['table']->table_number }}</div>
-                    <div>
-                        <div class="tstatus">{{ $label }}</div>
-                        <div class="tmembers">{{ $t['memberCount'] }} member{{ $t['memberCount'] != 1 ? 's' : '' }} · {{ $t['itemCount'] }} items</div>
-                    </div>
-                </a>
-            @endif
-        @endforeach
-    </div>
+    <livewire:waiter.tables-grid />
 </div>
 
 @include('partials.bottomnav-waiter')

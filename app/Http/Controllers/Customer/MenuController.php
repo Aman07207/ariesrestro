@@ -24,8 +24,12 @@ class MenuController extends Controller
 
         $categories = MenuCategory::where('hotel_id', $table->hotel_id)
             ->orderBy('display_order')
-            ->with(['menuItems' => fn ($q) => $q->orderBy('name')])
-            ->get();
+            // Unavailable items (chef marked out of stock) never reach the customer; a
+            // category left with nothing to order is dropped so it doesn't show an empty tab.
+            ->with(['menuItems' => fn ($q) => $q->where('is_available', true)->orderBy('name')])
+            ->get()
+            ->filter(fn ($category) => $category->menuItems->isNotEmpty())
+            ->values();
 
         $season = $this->weatherTheme->resolveForHotel($table->hotel);
 

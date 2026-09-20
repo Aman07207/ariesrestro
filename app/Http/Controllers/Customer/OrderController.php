@@ -22,7 +22,7 @@ class OrderController extends Controller
         return view('customer.track', [
             'table' => $this->currentTable(),
             'memberNo' => $this->currentMemberNo(),
-            'orderItems' => $this->currentOrderItems(),
+            'sessionId' => $this->currentSession()->id,
         ]);
     }
 

@@ -12,6 +12,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M14 9h1M14 13h1M9 21v-4h6v4"/></svg>
         Hotels
     </a>
+    <a href="{{ route('superadmin.staff.index') }}" class="{{ request()->routeIs('superadmin.staff.*') ? 'active' : '' }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21c1.5-4 4.5-6 7-6s5.5 2 7 6"/><circle cx="18" cy="8" r="3"/><path d="M17 12c2 .3 3.7 1.8 5 5"/></svg>
+        Staff (all hotels)
+    </a>
     <a href="{{ route('superadmin.subscriptions.index') }}" class="{{ request()->routeIs('superadmin.subscriptions.*') ? 'active' : '' }}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
         Subscriptions

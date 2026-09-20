@@ -3,6 +3,8 @@
 namespace App\Services\Customer;
 
 use App\Enums\OrderItemStatus;
+use App\Events\OrderPlaced;
+use App\Support\Realtime;
 use App\Enums\OrderStatus;
 use App\Models\MenuItem;
 use App\Models\Order;
@@ -39,7 +41,7 @@ class OrderPlacementService
             throw new InvalidArgumentException('No valid items to order.');
         }
 
-        return DB::transaction(function () use ($session, $memberNo, $lines, $menuItems) {
+        $order = DB::transaction(function () use ($session, $memberNo, $lines, $menuItems) {
             $order = Order::create([
                 'session_id' => $session->id,
                 'table_id' => $session->table_id,
@@ -82,5 +84,10 @@ class OrderPlacementService
 
             return $order->fresh('orderItems');
         });
+
+        // After commit, so a rolled-back order never notifies the kitchen.
+        Realtime::dispatch(OrderPlaced::for($order, $hotelId));
+
+        return $order;
     }
 }

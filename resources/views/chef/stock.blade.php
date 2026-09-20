@@ -27,5 +27,6 @@
 @endsection
 
 @push('scripts')
+<script>window.ARIES_STOCK_URL_BASE = @json(url('/chef/stock'));</script>
 <script src="{{ asset('js/chef.js') }}"></script>
 @endpush

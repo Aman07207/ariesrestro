@@ -12,6 +12,7 @@ Route::prefix('waiter')->name('waiter.')->middleware(['auth', 'role:waiter'])->g
     Route::get('/tables/{table}', [TableController::class, 'show'])->name('tables.show');
     Route::post('/order-items/{orderItem}/cancel', [OrderItemController::class, 'cancel'])->name('order-items.cancel');
     Route::get('/manual-order', [ManualOrderController::class, 'create'])->name('manual-order');
+    Route::post('/manual-order', [ManualOrderController::class, 'store'])->name('manual-order.store');
     Route::get('/calls', [CallController::class, 'index'])->name('calls');
     Route::post('/calls/{call}/attend', [CallController::class, 'attend'])->name('calls.attend');
     Route::get('/calls/pending', [CallController::class, 'pending'])->name('calls.pending');

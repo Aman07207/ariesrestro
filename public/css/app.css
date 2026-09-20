@@ -143,3 +143,14 @@ a.smallmute:hover{color:var(--orange);}
 .statcard{background:#fff; border:1px solid var(--border); border-radius:14px; padding:14px 8px; text-align:center;}
 .statcard .sv{font-size:16px; font-weight:800;}
 .statcard .sl{font-size:9.5px; color:var(--navy-soft); font-weight:700; margin-top:3px; text-transform:uppercase; letter-spacing:.02em;}
+
+/* Realtime status chip (connection dot + sound toggle) */
+#aries-rt { position: fixed; left: 10px; bottom: 78px; z-index: 60; display: flex; align-items: center; gap: 6px; }
+#aries-rt-dot { width: 10px; height: 10px; border-radius: 50%; background: #B5B2AC; box-shadow: 0 0 0 2px rgba(255,255,255,.9); }
+#aries-rt-dot[data-state="live"] { background: var(--green, #2e9e5b); }
+#aries-rt-dot[data-state="connecting"] { background: var(--amber, #e0a02a); }
+#aries-rt-dot[data-state="offline"] { background: var(--red, #d64545); }
+#aries-rt-sound { border: 0; border-radius: 999px; padding: 5px 11px; font: 600 11px/1 inherit; background: #1f2a44; color: #fff; opacity: .92; cursor: pointer; }
+#aries-rt-sound[data-state="locked"] { background: var(--amber, #e0a02a); color: #1f2a44; animation: aries-pulse 1.6s infinite; }
+#aries-rt-sound[data-state="muted"] { background: #8a8a8a; }
+@keyframes aries-pulse { 50% { transform: scale(1.06); } }

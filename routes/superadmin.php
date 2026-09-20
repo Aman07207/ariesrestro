@@ -9,6 +9,7 @@ use App\Http\Controllers\SuperAdmin\PaymentSettingController;
 use App\Http\Controllers\SuperAdmin\PlatformSettingController;
 use App\Http\Controllers\SuperAdmin\PlatformTableController;
 use App\Http\Controllers\SuperAdmin\SalesController;
+use App\Http\Controllers\SuperAdmin\StaffController;
 use App\Http\Controllers\SuperAdmin\SubscriptionController;
 use App\Http\Controllers\SuperAdmin\TableQrController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('super-admin')->name('superadmin.')->middleware(['auth', 'role:super_admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('hotels', HotelController::class)->except(['show']);
+    Route::resource('staff', StaffController::class)->except(['show']);
     Route::resource('subscriptions', SubscriptionController::class)->except(['show']);
     Route::resource('payment-settings', PaymentSettingController::class)->except(['show'])->parameters(['payment-settings' => 'payment_setting']);
     Route::get('/platform-settings', [PlatformSettingController::class, 'show'])->name('platform-settings');

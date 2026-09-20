@@ -18,9 +18,6 @@ class MenuSeeder extends Seeder
             ['name' => 'Main Course', 'type' => 'food', 'display_order' => 2],
             ['name' => 'Beverages', 'type' => 'beverage', 'display_order' => 3],
             ['name' => 'Desserts', 'type' => 'food', 'display_order' => 4],
-            // A menu-organization category, distinct from the tax_track on the item
-            // itself below — this is what actually drives GST vs VAT.
-            ['name' => 'Bar', 'type' => 'beverage', 'display_order' => 5],
         ];
 
         $categoryModels = [];
@@ -42,9 +39,8 @@ class MenuSeeder extends Seeder
             ['name' => 'Fresh Lime Soda', 'category' => 'Beverages', 'price' => 80, 'veg_type' => 'veg', 'avg_rating' => 4.2, 'is_popular' => false],
             ['name' => 'Gulab Jamun', 'category' => 'Desserts', 'price' => 90, 'veg_type' => 'veg', 'avg_rating' => 4.6, 'is_popular' => false],
             ['name' => 'Chocolate Brownie', 'category' => 'Desserts', 'price' => 150, 'veg_type' => 'veg', 'avg_rating' => 4.4, 'is_popular' => false],
-            // Alcohol: taxed under state VAT, not GST — the reachable path for that
-            // half of the billing engine. Nothing else in the seed data is alcoholic.
-            ['name' => 'Kingfisher Beer', 'category' => 'Bar', 'price' => 300, 'veg_type' => 'non-veg', 'avg_rating' => 4.3, 'is_popular' => false, 'tax_track' => 'vat'],
+            // No alcohol on the menu for now (the VAT billing track still works if an item
+            // is later added with tax_track = vat).
         ];
 
         foreach ($items as $item) {

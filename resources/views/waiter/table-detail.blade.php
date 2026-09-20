@@ -18,6 +18,8 @@
 @push('scripts')
 <script>
 window.ARIES_TABLES_URL = @json(route('waiter.tables'));
+window.ARIES_SETTLE_URL = @json(route('waiter.tables.settle', $table));
+window.ARIES_CLOSE_TABLE_URL = @json(route('waiter.tables.close', $table));
 window.ARIES_ORDER_ITEMS_URL_BASE = @json(url('/waiter/order-items'));
 </script>
 <script src="{{ asset('js/waiter.js') }}"></script>

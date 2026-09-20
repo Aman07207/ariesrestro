@@ -15,6 +15,14 @@ class ResolveTableSession
     {
     }
 
+    /** A paid session stays reachable only for the "thank you" page right after paying. */
+    private function allowedStatuses(Request $request): array
+    {
+        return $request->routeIs('customer.success')
+            ? [SessionStatus::Active, SessionStatus::Paid]
+            : [SessionStatus::Active];
+    }
+
     /**
      * Resolves the customer's active table session from the httpOnly cookie set by
      * CustomerSessionService::startSession(), so pages never trust anything the
@@ -25,7 +33,7 @@ class ResolveTableSession
         $token = $request->cookie(CustomerSessionService::SESSION_COOKIE);
 
         $session = $token
-            ? OrderSession::where('session_token', $token)->where('status', SessionStatus::Active)->first()
+            ? OrderSession::where('session_token', $token)->whereIn('status', $this->allowedStatuses($request))->first()
             : null;
 
         if ($session && $session->updated_at->lt(now()->subHours(CustomerSessionService::SESSION_TTL_HOURS))) {

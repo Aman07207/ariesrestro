@@ -5,11 +5,14 @@ use App\Http\Controllers\Waiter\ManualOrderController;
 use App\Http\Controllers\Waiter\OrderItemController;
 use App\Http\Controllers\Waiter\ProfileController;
 use App\Http\Controllers\Waiter\TableController;
+use App\Http\Controllers\Waiter\TableSettlementController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('waiter')->name('waiter.')->middleware(['auth', 'role:waiter'])->group(function () {
     Route::get('/tables', [TableController::class, 'index'])->name('tables');
     Route::get('/tables/{table}', [TableController::class, 'show'])->name('tables.show');
+    Route::post('/tables/{table}/settle', [TableSettlementController::class, 'settle'])->name('tables.settle');
+    Route::post('/tables/{table}/close', [TableSettlementController::class, 'close'])->name('tables.close');
     Route::post('/order-items/{orderItem}/cancel', [OrderItemController::class, 'cancel'])->name('order-items.cancel');
     Route::get('/manual-order', [ManualOrderController::class, 'create'])->name('manual-order');
     Route::post('/manual-order', [ManualOrderController::class, 'store'])->name('manual-order.store');

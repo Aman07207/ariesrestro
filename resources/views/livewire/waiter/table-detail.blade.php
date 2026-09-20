@@ -39,11 +39,10 @@
     <div class="smallmute" style="text-align:left; margin:4px 0;">Service charge not included — the customer opts in on their own bill screen.</div>
     <div class="billrow total"><span>Table total (before service charge)</span><span>₹{{ number_format($billPreview['grand_total'], 2) }}</span></div>
     <div wire:ignore>
-    <label class="flabel">Discount (if any)</label>
-    <input type="number" value="0">
     <label class="flabel">Payment mode</label>
-    <select><option>Razorpay</option><option>Cash</option></select>
-    </div>
+    <select id="settle-method"><option value="cash">Cash</option><option value="upi">UPI</option><option value="card">Card</option></select>
     <button type="button" class="btn btn-dark" style="margin-top:16px;" onclick="confirmBill()">Confirm bill &amp; mark paid</button>
+    <button type="button" class="btn btn-outline" style="margin-top:9px;" onclick="closeTableUnpaid()">Close table without payment</button>
+    </div>
 </div>
 </div>

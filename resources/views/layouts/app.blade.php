@@ -27,6 +27,7 @@
             host: @json(config('broadcasting.connections.reverb.options.host')),
             port: {{ (int) config('broadcasting.connections.reverb.options.port', 8080) }},
             scheme: @json(config('broadcasting.connections.reverb.options.scheme', 'http')),
+            authEndpoint: @json(url('/broadcasting/auth')),
         };
     </script>
     <script src="{{ asset('js/realtime.js') }}"></script>

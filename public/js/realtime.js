@@ -33,6 +33,7 @@
       wssPort: cfg.port,
       forceTLS: cfg.scheme === 'https',
       enabledTransports: ['ws', 'wss'],
+      authEndpoint: cfg.authEndpoint,
       csrfToken: document.querySelector('meta[name="csrf-token"]')?.content,
     });
     const conn = window.Echo.connector.pusher.connection;

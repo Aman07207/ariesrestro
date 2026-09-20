@@ -62,9 +62,30 @@ function confirmTransfer() {
   showToast('Table changed — session moved successfully');
 }
 
+function postTableAction(url, payload) {
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify(payload || {}),
+  }).then(async (res) => {
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.message || 'Could not update the table');
+    showToast(data.message);
+    setTimeout(() => { window.location.href = data.redirect || window.ARIES_TABLES_URL; }, 700);
+  }).catch((err) => showToast(err.message));
+}
+
 function confirmBill() {
-  showToast('Table marked paid & freed up');
-  setTimeout(() => { window.location.href = window.ARIES_TABLES_URL || '/waiter/tables'; }, 600);
+  postTableAction(window.ARIES_SETTLE_URL, { method: document.getElementById('settle-method').value });
+}
+
+function closeTableUnpaid() {
+  if (!confirm('Close this table without recording a payment?')) return;
+  postTableAction(window.ARIES_CLOSE_TABLE_URL);
 }
 
 // Manual order: lines are built locally, then sent in one POST. Only ids/qty/notes go up —

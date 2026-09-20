@@ -4,11 +4,17 @@ namespace App\Services\Customer;
 
 use App\Enums\BillStatus;
 use App\Enums\OrderItemStatus;
+use App\Enums\PaymentStatus;
+use App\Enums\SessionStatus;
+use App\Enums\TableStatus;
 use App\Enums\TaxTrack;
 use App\Models\Bill;
 use App\Models\OrderItem;
 use App\Models\OrderSession;
+use App\Models\Payment;
+use App\Models\Table;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * The billing engine. Every figure here is legally load-bearing — see the
@@ -89,13 +95,39 @@ class BillingService
         );
     }
 
-    public function markPaid(Bill $bill): void
+    /**
+     * Freezes the bill, records the payment, and settles the table: the session ends and
+     * the table is freed, so the next guest to scan starts a clean session instead of
+     * inheriting this one's orders.
+     */
+    public function markPaid(Bill $bill, string $method = 'razorpay'): void
     {
         if ($bill->status === BillStatus::Paid) {
             return;
         }
 
-        $bill->update(['status' => BillStatus::Paid]);
+        DB::transaction(function () use ($bill, $method) {
+            $bill->update(['status' => BillStatus::Paid]);
+
+            Payment::create([
+                'hotel_id' => $bill->hotel_id,
+                'session_id' => $bill->session_id,
+                'bill_id' => $bill->id,
+                'amount' => $bill->grand_total,
+                'method' => $method,
+                'status' => PaymentStatus::Success,
+            ]);
+
+            $this->endSession($bill->session_id, SessionStatus::Paid);
+        });
+    }
+
+    /** Ends a table session and frees its table. */
+    public function endSession(int $sessionId, SessionStatus $status): void
+    {
+        $session = OrderSession::withoutGlobalScopes()->findOrFail($sessionId);
+        $session->update(['status' => $status]);
+        Table::withoutGlobalScopes()->where('id', $session->table_id)->update(['status' => TableStatus::Available]);
     }
 
     /** @return array{0: float, 1: float} [foodBase, alcoholBase] */
